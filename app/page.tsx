@@ -39,15 +39,21 @@ export default function Home() {
         variants={containerVariants}
         className="space-y-6"
       >
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="space-y-3">
+          {/* Availability badge — first thing a recruiter sees */}
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-white/50 border border-white/10 rounded-full px-3 py-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+            Open to opportunities · Sydney, AU
+          </div>
           <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-tight">
             Eric Zhou
           </h1>
         </motion.div>
 
         <motion.p variants={itemVariants} className="text-white/60 text-lg sm:text-xl max-w-2xl">
-          Software engineer building systems, robotics, and tools. UNSW Software Engineering
-          student passionate about distributed systems and competitive robotics.
+          Final-year Software Engineering student at{' '}
+          <span className="text-white/80">UNSW</span>, building distributed systems,
+          robotics AI, and developer tools. Competed internationally at RoboCup.
         </motion.p>
 
         <motion.div
@@ -61,18 +67,20 @@ export default function Home() {
             View Projects
           </Link>
           <a
-            href="https://github.com/ericzhou"
+            href="https://linkedin.com/in/congeezee"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/CongeeZee"
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
           >
             GitHub
-          </a>
-          <a
-            href="/resume.pdf"
-            className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
-          >
-            Resume
           </a>
         </motion.div>
       </motion.section>

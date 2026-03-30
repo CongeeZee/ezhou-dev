@@ -17,9 +17,16 @@ export default function ProjectCard(project: Project) {
           <h3 className="font-semibold text-lg mb-2 group-hover:text-white transition-colors">
             {project.title}
           </h3>
-          <p className="text-white/60 text-sm mb-4 flex-grow">
+          <p className="text-white/60 text-sm mb-3 flex-grow">
             {project.tagline}
           </p>
+
+          {/* Impact metric — visible at a glance for recruiters */}
+          {project.metric && (
+            <p className="text-xs font-mono text-white/40 mb-4 border-l-2 border-white/10 pl-2">
+              {project.metric}
+            </p>
+          )}
 
           {/* Tech Stack */}
           <div className="flex flex-wrap gap-2 mb-4">
@@ -42,6 +49,7 @@ export default function ProjectCard(project: Project) {
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-white transition-colors"
                 aria-label="GitHub repository"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Github size={18} />
               </a>
@@ -53,6 +61,7 @@ export default function ProjectCard(project: Project) {
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-white transition-colors"
                 aria-label="Live demo"
+                onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink size={18} />
               </a>

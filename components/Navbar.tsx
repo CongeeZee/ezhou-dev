@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Github, Menu, X } from 'lucide-react'
+import { Github, Linkedin, Menu, X } from 'lucide-react'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,15 +48,26 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <a
-              href="https://github.com/ericzhou"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-white/90 transition-colors"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://github.com/CongeeZee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-white/90 transition-colors"
+                aria-label="GitHub"
+              >
+                <Github size={20} />
+              </a>
+              <a
+                href="https://linkedin.com/in/congeezee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-white/90 transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={20} />
+              </a>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -88,12 +99,20 @@ export default function Navbar() {
                 </Link>
               ))}
               <a
-                href="https://github.com/ericzhou"
+                href="https://github.com/CongeeZee"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block px-2 py-2 text-sm text-white/60 hover:text-white/90 transition-colors"
               >
                 GitHub
+              </a>
+              <a
+                href="https://linkedin.com/in/congeezee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-2 py-2 text-sm text-white/60 hover:text-white/90 transition-colors"
+              >
+                LinkedIn
               </a>
             </div>
           </div>

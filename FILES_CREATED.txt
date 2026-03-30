@@ -1,0 +1,82 @@
+EZHOU.DEV - COMPLETE PROJECT FILE LIST
+=======================================
+
+PROJECT STRUCTURE:
+/home/fool/ezhou-dev/
+
+CONFIGURATION FILES (6):
+✓ package.json
+✓ next.config.ts
+✓ tailwind.config.ts
+✓ tsconfig.json
+✓ postcss.config.js
+✓ .eslintrc.json
+
+APP ROUTER PAGES (8):
+✓ app/layout.tsx (Root layout with Navbar & Footer)
+✓ app/page.tsx (Landing page with hero & featured projects)
+✓ app/globals.css (Global styles with dark theme)
+✓ app/projects/page.tsx (Projects listing)
+✓ app/projects/[slug]/page.tsx (Project detail pages)
+✓ app/blog/page.tsx (Blog listing)
+✓ app/blog/[slug]/page.tsx (Blog post pages)
+✓ app/about/page.tsx (About page)
+
+COMPONENTS (6):
+✓ components/Navbar.tsx (Sticky nav with mobile menu)
+✓ components/Footer.tsx (Footer with links)
+✓ components/ProjectCard.tsx (Project card with animations)
+✓ components/LabCard.tsx (Lab experiment card)
+✓ components/BlogCard.tsx (Blog post card)
+✓ components/AnimatedSection.tsx (Scroll-triggered animations)
+
+DATA & UTILITIES (3):
+✓ lib/projects.ts (5 realistic projects with full details)
+✓ lib/lab.ts (6 lab experiments)
+✓ lib/blog.ts (MDX blog post reader)
+
+MDX BLOG POSTS (3):
+✓ content/blog/building-robocup-ai.mdx (1000+ words)
+✓ content/blog/writing-a-kv-store-in-rust.mdx (1100+ words)
+✓ content/blog/lessons-from-building-in-public.mdx (700+ words)
+
+PROJECT DOCUMENTATION (4):
+✓ README.md (Complete project documentation)
+✓ PROJECT_SUMMARY.md (Comprehensive project summary)
+✓ .gitignore (Git ignore rules)
+✓ public/.gitkeep (Public assets placeholder)
+
+TOTAL FILES: 32
+
+KEY FEATURES IMPLEMENTED:
+==========================
+✓ Dark mode design (#0a0a0a background, #f0f0f0 text)
+✓ Pure monochrome aesthetic (white accents only)
+✓ Minimalist typography-focused layout
+✓ Mobile-first responsive design
+✓ Framer Motion animations (scroll-triggered)
+✓ MDX blog system with syntax highlighting
+✓ Project showcase with detail pages
+✓ Lab experiments section
+✓ About page with detailed background
+✓ Sticky navigation with mobile menu
+✓ Footer with social links
+✓ Static generation for performance
+✓ TypeScript for type safety
+✓ Tailwind CSS for styling
+✓ Next.js 14 App Router
+
+DATA PROVIDED:
+===============
+Projects: 5 complete projects (RoboCup AI, KV Store, Website, Pathfinder, Sysmoni)
+Lab: 6 experiments with tags and dates
+Blog Posts: 3 fully written articles with frontmatter
+About: Complete background, experience, skills, interests
+
+READY TO USE:
+==============
+1. npm install
+2. npm run dev
+3. Open http://localhost:3000
+
+All files are production-quality, fully implemented with no placeholders.

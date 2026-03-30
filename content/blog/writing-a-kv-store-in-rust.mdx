@@ -1,0 +1,189 @@
+---
+title: Writing a Distributed Key-Value Store in Rust
+date: 2024-04-22
+excerpt: Implementing a distributed consensus system from scratch using the Raft algorithm. A deep dive into how to handle consistency, fault tolerance, and concurrency in Rust.
+tags: [rust, systems, distributed-systems, databases]
+---
+
+# Writing a Distributed Key-Value Store in Rust
+
+One of the most valuable learning experiences in systems programming is implementing something that already exists—well. When you build a distributed key-value store, you're not inventing anything new. But you're forced to grapple with problems that have been solved in databases like etcd, Consul, and others. And in doing so, you develop an intuition for distributed systems that no amount of reading can provide.
+
+Over the past three months, I implemented a distributed key-value store in Rust using the Raft consensus algorithm. This article documents the journey, the challenges, and the lessons learned.
+
+## Why Raft?
+
+Raft is a consensus algorithm designed to be understandable. The original Paxos algorithm, which solves the same problem, is notoriously difficult to understand and implement correctly. Raft was created specifically to be easier to understand while maintaining the same fault-tolerance guarantees.
+
+The problem Raft solves: How can multiple machines maintain identical copies of data, even when some machines fail or the network gets partitioned?
+
+## System Architecture
+
+### The State Machine
+
+At the heart of the system is a simple state machine: a key-value store. The entire state is a HashMap<String, String>. In production systems, you'd use a more sophisticated data structure (LSM trees, B+ trees), but the principle is the same.
+
+```rust
+struct StateMachine {
+    store: HashMap<String, String>,
+}
+
+impl StateMachine {
+    fn apply(&mut self, command: Command) {
+        match command {
+            Command::Set(key, value) => {
+                self.store.insert(key, value);
+            }
+            Command::Delete(key) => {
+                self.store.remove(&key);
+            }
+        }
+    }
+
+    fn query(&self, key: &str) -> Option<&str> {
+        self.store.get(key).map(|s| s.as_str())
+    }
+}
+```
+
+The key insight: multiple machines running the same state machine, with the same sequence of commands applied in the same order, will maintain identical state. This is the essence of state machine replication.
+
+### Raft Consensus
+
+Raft works by having one leader coordinate the replication. The leader receives client requests, replicates them to followers, and once a majority of machines have acknowledged the replication, the leader can safely apply the command to its state machine and tell the client it succeeded.
+
+The Raft state for each server includes:
+
+```rust
+struct RaftState {
+    // Persistent (written to disk before responding)
+    current_term: u64,
+    voted_for: Option<u64>,
+    log: Vec<LogEntry>,
+
+    // Volatile (can be reconstructed from log)
+    commit_index: u64,
+    last_applied: u64,
+
+    // Leader state
+    next_index: HashMap<u64, u64>,
+    match_index: HashMap<u64, u64>,
+}
+```
+
+**current_term** and **voted_for** must be persisted to disk because they're used to prevent a server from voting twice in the same term. If a server crashes and reboots, it must remember these values, otherwise the invariant that only one leader can be elected per term could be violated.
+
+The **log** is the complete history of all commands. By persisting this, we ensure that commands are never lost. If a server crashes mid-replication, it can recover and continue.
+
+### Leader Election
+
+When the system starts or a leader becomes unavailable:
+
+1. A server times out waiting for heartbeat from the leader
+2. It increments its term and requests votes from all other servers
+3. Other servers grant votes if the requesting server's log is at least as up-to-date as theirs
+4. Once a server receives votes from a majority, it becomes leader
+5. The new leader immediately sends heartbeat messages to establish authority
+
+The beauty of Raft is that leader election is surprisingly simple. Paxos makes this incredibly complicated. Raft's rule (vote for servers with logs at least as up-to-date as yours) is intuitive and sufficient.
+
+### Log Replication
+
+When a leader receives a client request:
+
+1. It appends the command to its log
+2. It sends AppendEntries RPC to all followers
+3. When a follower receives AppendEntries, it validates that the incoming log is consistent with its own, then appends new entries
+4. Once a majority of followers have acknowledged, the leader marks the entry as "committed"
+5. Committed entries are safe to apply to the state machine
+6. The leader tells followers which entries are committed
+7. Followers apply committed entries to their state machines
+
+This replication model ensures safety: an entry only becomes committed once it's replicated to a majority, so even if the leader crashes, a successor leader will have the entry (by the up-to-date requirement in leader election).
+
+## Implementation Challenges
+
+### Challenge 1: Concurrency in Rust
+
+Rust's ownership system forces you to be explicit about concurrency. You can't just have a leader thread and follower thread accessing shared state—the compiler won't let you.
+
+We used Tokio (async runtime) and mutex locks (Arc<Mutex<State>>). The tricky part was ensuring we never hold locks while doing I/O, which would block the entire async executor.
+
+```rust
+// Bad: holding lock during I/O
+async fn bad_example(state: Arc<Mutex<State>>) {
+    let mut state = state.lock().await;
+    let response = make_rpc_call().await; // WRONG: holding lock
+}
+
+// Good: release lock before I/O
+async fn good_example(state: Arc<Mutex<State>>) {
+    let data = {
+        let state = state.lock().await;
+        get_data_needed(&state)
+    }; // lock released here
+    let response = make_rpc_call(data).await; // OK: no lock held
+}
+```
+
+### Challenge 2: Testing Distributed Systems
+
+How do you test a system where failures are probabilistic? Machines might crash, messages might be delayed or reordered, and you need to verify the system remains correct despite these failures.
+
+We built a test harness that could:
+
+1. Create multiple server instances
+2. Inject failures: partition the network, lose messages, delay them
+3. Verify invariants: "if a majority of servers are up and communicating, progress is made", "if all servers are up, consistency is achieved"
+
+Testing these properties rigorously revealed several subtle bugs where servers could apply commands out of order.
+
+### Challenge 3: Efficient Snapshot and Recovery
+
+With Raft, logs grow unbounded. To prevent servers from needing to replay the entire log on startup, we use snapshotting: periodically, we dump the entire state machine to disk, discard the applied portion of the log, and restart from the snapshot.
+
+This is simple in concept but tricky to implement correctly. A server might crash during snapshotting, or while installing a snapshot from another server. We needed to handle these carefully with atomic file operations.
+
+## Performance Optimization
+
+Initial implementation hit 1000 ops/sec throughput. Production systems like etcd hit 10,000+ ops/sec. The bottleneck was fsync—we were syncing to disk after every log entry for safety, and disk I/O was the limiting factor.
+
+Optimizations that helped:
+
+1. **Batching**: Group multiple client requests into a single log entry, reducing disk I/O overhead
+2. **Pipelining**: Don't wait for one request to complete before processing the next
+3. **Async I/O**: Use async file operations instead of blocking
+4. **Log rotation**: Periodically compact the log to remove applied entries
+
+With these optimizations, we hit 8,000 ops/sec consistently, approaching production systems.
+
+## Lessons Learned
+
+### 1. Understand the Problem Before Implementing
+
+I initially tried to implement Raft from memory. This was a mistake. Reading the Raft paper thoroughly and understanding the invariants first saved weeks of debugging.
+
+### 2. Rust Forces Good Design
+
+The ownership system that seemed restrictive early on actually prevented entire classes of bugs. Code that compiles in Rust has fewer concurrency issues by construction.
+
+### 3. Distributed Systems Are Hard
+
+Even with a relatively simple algorithm like Raft, subtle issues emerge. The importance of comprehensive testing cannot be overstated.
+
+### 4. Measure Before Optimizing
+
+My initial optimization attempts had minimal impact. After measuring, I found the real bottleneck (fsync) and optimization was straightforward.
+
+## What Would I Do Differently?
+
+1. **Start with a simpler baseline**: Implement a non-distributed key-value store first, then add distribution
+2. **Test from the beginning**: Don't write 5000 lines of code then try to test. Implement and test concurrently
+3. **Use simulation**: Build a simulator to test distributed scenarios before running them
+4. **Document assumptions**: Every decision in distributed systems relies on assumptions. Make them explicit
+
+## Conclusion
+
+Implementing a distributed key-value store is one of the most rewarding projects I've done. You end up with something that actually works (passes rigorous testing), you understand the guarantees it provides, and you develop an intuition for distributed systems that's hard to get any other way.
+
+If you're serious about systems programming, I'd highly recommend this project. It's non-trivial but doable for one person, and the learning is enormous.

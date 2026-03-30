@@ -12,6 +12,8 @@ export interface Project {
   learned: string[]
   future: string[]
   featured: boolean
+  /** One-line impact stat shown on the project card — recruiter-facing */
+  metric?: string
 }
 
 export const projects: Project[] = [
@@ -22,8 +24,9 @@ export const projects: Project[] = [
     description:
       'Developed a real-time strategy AI system for a RoboCup SSL robot team, handling multi-agent coordination, vision processing, and dynamic decision-making under time constraints.',
     tech: ['Python', 'ROS2', 'OpenCV', 'C++'],
-    github: 'https://github.com/ericzhou/robocup-strategy',
+    github: 'https://github.com/CongeeZee/robocup-strategy',
     demo: 'https://robocup-strategy-demo.ezhou.dev',
+    metric: '5 robots · 60Hz real-time · international competition',
     overview:
       'The RoboCup Strategy AI system was built to handle the complex problem of multi-robot coordination in a fast-paced, dynamic environment. The system processes real-time vision data from multiple cameras, maintains a world model of all robots and the ball, and makes strategic decisions about robot movements and actions. The AI uses a hierarchical approach with high-level strategy planning and low-level motion control, allowing the team to respond to changing game conditions within milliseconds.',
     architecture:
@@ -55,7 +58,8 @@ export const projects: Project[] = [
     description:
       'Built a distributed key-value store from scratch in Rust, implementing Raft consensus algorithm for consistency, with support for multi-node deployments and network partitions.',
     tech: ['Rust', 'Tokio', 'Protobuf', 'TCP'],
-    github: 'https://github.com/ericzhou/distributed-kv',
+    github: 'https://github.com/CongeeZee/distributed-kv',
+    metric: '8,000 ops/sec · Raft consensus · fault-tolerant',
     overview:
       'This project implements a distributed key-value store that can tolerate node failures and network partitions. The store uses the Raft consensus algorithm to ensure that data is consistently replicated across multiple nodes. The implementation includes leader election, log replication, and snapshot mechanisms. The system can handle network splits gracefully and continues to serve requests as long as a majority of nodes remain connected.',
     architecture:
@@ -87,8 +91,9 @@ export const projects: Project[] = [
     description:
       'A minimalist personal website built with Next.js 14, featuring a blog powered by MDX, dark mode typography-focused design, and smooth Framer Motion animations.',
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'MDX'],
-    github: 'https://github.com/ericzhou/ezhou-dev',
+    github: 'https://github.com/CongeeZee/ezhou-dev',
     demo: 'https://ezhou.dev',
+    metric: '16 static pages · MDX blog · Vercel edge',
     overview:
       'The personal website serves as both a portfolio to showcase completed projects and a platform for technical writing. The site uses Next.js 14 with the App Router for modern React patterns and optimal performance. MDX enables writing blog posts with embedded interactive components. The design prioritizes typography and whitespace, with a dark color scheme that is easy on the eyes.',
     architecture:
@@ -120,8 +125,9 @@ export const projects: Project[] = [
     description:
       'A web-based tool for visualizing and comparing different pathfinding algorithms on a grid-based maze with obstacles. Supports A*, Dijkstra, and BFS algorithms with real-time visualization.',
     tech: ['TypeScript', 'Canvas API', 'React', 'Tailwind CSS'],
-    github: 'https://github.com/ericzhou/pathfinder-visualizer',
+    github: 'https://github.com/CongeeZee/pathfinder-visualizer',
     demo: 'https://pathfinder-visualizer.ezhou.dev',
+    metric: '60fps rendering · A*, Dijkstra, BFS visualised',
     overview:
       'The pathfinding visualizer is an educational tool that helps understand how different pathfinding algorithms explore a maze. Users can draw custom mazes, set start and end points, then watch the algorithm explore the space and find the optimal path. The visualization clearly shows which cells have been explored vs. which are part of the final path.',
     architecture:
@@ -153,7 +159,8 @@ export const projects: Project[] = [
     description:
       'A performant terminal UI application for monitoring system resources in real-time, written in Rust. Displays CPU, memory, disk, and network metrics with a beautiful TUI.',
     tech: ['Rust', 'Ratatui', 'Sysinfo'],
-    github: 'https://github.com/ericzhou/sysmoni',
+    github: 'https://github.com/CongeeZee/sysmoni',
+    metric: '<5ms latency · CPU, memory, disk, network',
     overview:
       'Sysmoni is a lightweight system monitor that runs in the terminal, providing real-time insights into system performance. Unlike heavier monitoring tools, it starts instantly and uses minimal resources while providing comprehensive system metrics. The interface is organized into multiple views for different metric types.',
     architecture:

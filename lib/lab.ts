@@ -12,7 +12,7 @@ export const labItems: LabItem[] = [
     description:
       'A collection of small command-line utilities for everyday tasks. Includes tools for batch file processing, quick prototyping, and system diagnostics.',
     tags: ['rust', 'cli', 'tooling'],
-    link: 'https://github.com/ericzhou/cli-utils',
+    link: 'https://github.com/CongeeZee/cli-utils',
     date: '2024-02-15',
   },
   {
@@ -28,7 +28,7 @@ export const labItems: LabItem[] = [
     description:
       'A Discord bot for setting reminders and organizing tasks within Discord servers. Uses slash commands and reactions for intuitive interaction.',
     tags: ['python', 'discord.py', 'bots'],
-    link: 'https://github.com/ericzhou/discord-reminder-bot',
+    link: 'https://github.com/CongeeZee/discord-reminder-bot',
     date: '2023-11-10',
   },
   {
@@ -51,7 +51,7 @@ export const labItems: LabItem[] = [
     description:
       'A meticulously organized dotfiles repository with shell configurations, neovim setup, and development environment tooling.',
     tags: ['shell', 'tooling', 'productivity'],
-    link: 'https://github.com/ericzhou/dotfiles',
+    link: 'https://github.com/CongeeZee/dotfiles',
     date: '2024-03-01',
   },
 ]

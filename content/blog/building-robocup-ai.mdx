@@ -1,0 +1,128 @@
+---
+title: Building RoboCup AI - A Deep Dive into Strategy and Vision Systems
+date: 2024-03-15
+excerpt: Lessons from developing real-time decision-making systems for competitive robot soccer. How we built a strategy engine that could compete at international RoboCup competitions.
+tags: [robotics, ai, python, computer-vision]
+---
+
+# Building RoboCup AI: A Deep Dive into Strategy and Vision Systems
+
+Competitive robotics is where software engineering meets physics, where microseconds matter, and where elegant algorithms are tested in the harshest environment possible: reality. Over the past year, I led the AI and strategy development for our university's RoboCup SSL (Small Size League) team, and the experience fundamentally changed how I think about building systems.
+
+## What is RoboCup SSL?
+
+RoboCup Soccer Small Size League is a competition where teams of five autonomous robots play soccer against each other on a 1.3m × 0.9m field. Each team can see all robots and the ball via overhead cameras and must compute their strategy at 60Hz. The robots communicate with the strategy system via WiFi and receive command packets at high frequency.
+
+The constraints are brutally clear: you have roughly 15 milliseconds to process vision data, compute strategy, and send commands to robots before the next camera frame arrives. Miss your deadline, and your robots move at the last computed command while opponents adapt to the current situation.
+
+## The Architecture
+
+We built a modular system with clear separation of concerns:
+
+### Vision Pipeline
+
+The first component is vision processing. We receive raw frames from two overhead cameras that cover the entire field. The pipeline:
+
+1. **Image Processing**: Convert frames to HSV color space and apply morphological operations to identify field markers, ball position, and robot positions
+2. **Robot Detection**: Use blob detection to find robots, then assign IDs based on color patterns (each robot has a unique colored stripe)
+3. **Data Association**: Handle multi-camera fusion by identifying the same robot across both cameras
+4. **State Estimation**: Maintain a running estimate of positions and velocities, filtering noisy measurements
+
+This pipeline is written in C++ with OpenCV for performance. Processing two 1280×960 frames consistently within a frame window required careful optimization, including GPU acceleration for specific operations.
+
+### World Model
+
+The vision pipeline feeds into a world model that maintains:
+
+- Position and velocity estimates for all robots on the field (ours and opponents')
+- Ball position, velocity, and spin rate
+- Field geometry and obstacle information
+- Game state and current play situation
+
+The world model is the source of truth for our strategy engine. It uses Kalman filters to smooth noisy measurements from vision and predict where robots and the ball will be by the time our commands take effect.
+
+### Strategy Engine
+
+This is where the intelligent behavior emerges. Our strategy engine uses a hierarchical approach:
+
+**High-level tactics**: These are predefined formations and behaviors (defensive setup, attacking formation, set piece execution). We use a simple state machine to transition between tactics based on game situation.
+
+**Mid-level roles**: Each robot is assigned a role within the current tactic (defender, midfielder, striker, goalkeeper). Roles define the goal state for that robot.
+
+**Low-level motion control**: Individual robot controllers compute the precise commands needed to reach their goal state. This handles acceleration limits, rotational constraints, and obstacle avoidance.
+
+A simple example: when we want to execute a "counterattack" formation:
+- The tactic system detects we've regained possession in our defensive half
+- It switches to "counterattack" mode and assigns roles: one robot stays as defender, two become midfielders (positioned to support the attack), two become strikers
+- Each midfield robot computes commands to move into their designated position while maintaining awareness of other robots
+- As possession progresses toward the opponent's goal, the midfielders feed the ball to a striker who shoots
+
+### Decision Making Under Uncertainty
+
+In practice, nothing is as clean as it sounds. Vision occasionally fails (reflections, occlusions). Robot communications can be delayed. The world doesn't always match your model.
+
+We handle this through:
+
+1. **Graceful degradation**: If we lose vision on a particular robot briefly, we extrapolate based on last known velocity rather than freezing
+2. **Contingency planning**: The strategy engine always computes a default safe behavior (move away from the ball, form a defensive line) as fallback
+3. **Timeout mechanisms**: If commands aren't being received reliably, robots revert to fail-safe behaviors
+
+## Key Challenges
+
+### The Latency Problem
+
+The biggest challenge we faced was latency. There's inherent delay between what the camera sees and when robots react. If the ball is moving toward your goal and there's 30ms of delay (camera → vision processing → strategy → motion control → robot execution), the opponent has 30ms of "free time" to change the situation.
+
+We reduced this through:
+
+- Prediction: Always predict where the ball will be by execution time
+- Parallel processing: Run vision and strategy in separate threads to avoid pipeline stalls
+- Optimized communication: Use UDP instead of TCP, send commands as compact binary packets
+
+### Coordination
+
+Coordinating five robots acting on potentially stale information is genuinely difficult. A robot executing a pass needs to account for where the receiving robot will be, not where it was when the command was computed.
+
+We use a technique called "play pre-computation": before executing a play, all robots compute their expected trajectories and share them with the central strategy engine. The strategy engine can then verify the play is feasible and adjust if needed.
+
+### Tuning and Iteration
+
+There's a massive gap between a strategy that looks good in simulation and one that works on physical hardware. Robot hardware varies, fields have different surfaces, and environmental factors (lighting changes, WiFi interference) create real-world chaos.
+
+We invested heavily in tools for tuning and debugging:
+
+- A logging system that records all sensor data, strategy decisions, and robot commands so we could replay and analyze matches
+- A live debugger that let us inspect the state of all robots, the world model, and strategy decisions
+- Extensive automated testing, though ultimately nothing beats testing against real robots
+
+## Lessons Learned
+
+### 1. Constraints Are Your Friends
+
+The tight latency requirements forced us to think deeply about what information really matters and strip away everything else. This actually made our system more robust than if we'd tried to compute complex behaviors with unlimited time.
+
+### 2. Iteration Speed Matters More Than Complexity
+
+The teams that won weren't running the most sophisticated AI. They were the teams that could iterate fastest, test their ideas, and improve. We'd have been better off shipping simpler strategies faster than spending months perfecting a complex one.
+
+### 3. Simulation Is Essential But Not Sufficient
+
+We built a physics simulator to test strategies without hardware. It was invaluable for quick iteration, but it never perfectly matched reality. The lesson: use simulation to rapidly explore the design space, but always validate on real hardware early.
+
+### 4. Monitor Everything
+
+Build comprehensive logging and monitoring into your system from day one. During a match, you can't debug a failing decision. But if you logged all the inputs, you can replay it afterward and understand what went wrong.
+
+## Future Directions
+
+If I were to continue this work, I'd focus on:
+
+1. **Learning from opponent behavior**: Currently, we use hand-coded tactics. Using reinforcement learning to discover effective strategies could unlock new capabilities
+2. **Decentralized decision-making**: Right now, all decisions are made centrally. Giving robots more autonomy to adapt could make us more robust to communication delays
+3. **Active vision**: Instead of passively processing what the cameras see, have robots optimize their positioning to improve the vision system's accuracy
+
+## Conclusion
+
+Building RoboCup AI taught me that beautiful code and elegant algorithms only matter if they solve the actual problem. It taught me the value of ruthless prioritization (drop everything that doesn't directly improve winning). And it taught me the humbling lesson that reality is messy, and systems that work in the real world are genuinely impressive.
+
+If you're interested in robotics, I'd highly recommend getting involved in a robotics competition. The constraints are clear, the feedback is immediate, and you'll learn more than in a semester of theory.

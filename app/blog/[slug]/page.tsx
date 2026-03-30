@@ -142,8 +142,8 @@ export default async function BlogPostPage({
           components={mdxComponents}
           options={{
             mdxOptions: {
-              remarkPlugins: [remarkGfm],
-              rehypePlugins: [rehypeHighlight],
+              remarkPlugins: [remarkGfm as any],
+              rehypePlugins: [rehypeHighlight as any],
             },
           }}
         />

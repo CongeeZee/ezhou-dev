@@ -21,7 +21,7 @@ The problem Raft solves: How can multiple machines maintain identical copies of 
 
 ### The State Machine
 
-At the heart of the system is a simple state machine: a key-value store. The entire state is a HashMap<String, String>. In production systems, you'd use a more sophisticated data structure (LSM trees, B+ trees), but the principle is the same.
+At the heart of the system is a simple state machine: a key-value store. The entire state is a `HashMap<String, String>`. In production systems, you'd use a more sophisticated data structure (LSM trees, B+ trees), but the principle is the same.
 
 ```rust
 struct StateMachine {
@@ -107,7 +107,7 @@ This replication model ensures safety: an entry only becomes committed once it's
 
 Rust's ownership system forces you to be explicit about concurrency. You can't just have a leader thread and follower thread accessing shared state—the compiler won't let you.
 
-We used Tokio (async runtime) and mutex locks (Arc<Mutex<State>>). The tricky part was ensuring we never hold locks while doing I/O, which would block the entire async executor.
+We used Tokio (async runtime) and mutex locks (`Arc<Mutex<State>>`). The tricky part was ensuring we never hold locks while doing I/O, which would block the entire async executor.
 
 ```rust
 // Bad: holding lock during I/O

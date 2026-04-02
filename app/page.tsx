@@ -51,9 +51,9 @@ export default function Home() {
         </motion.div>
 
         <motion.p variants={itemVariants} className="text-white/60 text-lg sm:text-xl max-w-2xl">
-          Final-year Software Engineering student at{' '}
-          <span className="text-white/80">UNSW</span>, building distributed systems,
-          robotics AI, and developer tools. Competed internationally at RoboCup.
+          Software Engineering student at{' '}
+          <span className="text-white/80">UNSW</span>. Building production APIs, autonomous
+          robotics systems, and real-time web apps. Team Lead at rUNSWift — 5× World Champions.
         </motion.p>
 
         <motion.div
@@ -67,7 +67,7 @@ export default function Home() {
             View Projects
           </Link>
           <a
-            href="https://linkedin.com/in/congeezee"
+            href="https://linkedin.com/in/eric-zhou-a09898337"
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
@@ -81,6 +81,14 @@ export default function Home() {
             className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
           >
             GitHub
+          </a>
+          <a
+            href="/eric-zhou-resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
+          >
+            Resume ↓
           </a>
         </motion.div>
       </motion.section>
@@ -123,13 +131,14 @@ export default function Home() {
           <h2 className="text-3xl sm:text-4xl font-bold">About</h2>
           <div className="space-y-3 text-white/70 max-w-2xl">
             <p>
-              I'm a passionate software engineer at UNSW currently exploring distributed systems,
-              robotics, and infrastructure. I believe in building things that work—whether that's
-              robust backend systems, intelligent robots, or developer tools.
+              I'm a Software Engineering student at UNSW with a focus on backend systems and
+              robotics. I've shipped production APIs with full test coverage, led the behaviours
+              sub-team for a 5× World Champion robot soccer team, and built real-time multiplayer
+              platforms from scratch.
             </p>
             <p>
-              When I'm not coding, you'll find me at RoboCup competitions, contributing to open
-              source, or bouldering at the local climbing gym.
+              Outside of engineering, I'm President of the UNSW Social Golf Society and a two-time
+              Unigames National gold medallist in golf.
             </p>
           </div>
           <Link

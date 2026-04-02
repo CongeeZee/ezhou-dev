@@ -59,7 +59,7 @@ export default function Navbar() {
                 <Github size={20} />
               </a>
               <a
-                href="https://linkedin.com/in/congeezee"
+                href="https://linkedin.com/in/eric-zhou-a09898337"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-white/90 transition-colors"
@@ -107,7 +107,7 @@ export default function Navbar() {
                 GitHub
               </a>
               <a
-                href="https://linkedin.com/in/congeezee"
+                href="https://linkedin.com/in/eric-zhou-a09898337"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block px-2 py-2 text-sm text-white/60 hover:text-white/90 transition-colors"

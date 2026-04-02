@@ -14,9 +14,14 @@ export default function ProjectCard(project: Project) {
     >
       <Link href={`/projects/${project.slug}`}>
         <div className="border border-white/10 rounded-lg p-6 hover:border-white/40 transition-colors cursor-pointer h-full flex flex-col">
-          <h3 className="font-semibold text-lg mb-2 group-hover:text-white transition-colors">
-            {project.title}
-          </h3>
+          <div className="flex items-baseline justify-between gap-2 mb-2">
+            <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
+              {project.title}
+            </h3>
+            {project.year && (
+              <span className="text-xs font-mono text-white/30 shrink-0">{project.year}</span>
+            )}
+          </div>
           <p className="text-white/60 text-sm mb-3 flex-grow">
             {project.tagline}
           </p>

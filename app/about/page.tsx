@@ -3,10 +3,15 @@ import AnimatedSection from '@/components/AnimatedSection'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Learn more about Eric Zhou, a software engineer passionate about systems and robotics.',
+  description: 'Software Engineering student at UNSW, Team Lead at rUNSWift, and builder of systems and tools.',
 }
 
 export default function AboutPage() {
+  const languages = ['TypeScript', 'JavaScript', 'Python', 'C', 'Java', 'HTML', 'CSS']
+  const frameworks = ['Node.js', 'Express', 'React', 'ROS2', 'Next.js', 'Jest', 'OpenAPI/Swagger']
+  const databases = ['PostgreSQL', 'Supabase', 'SQL']
+  const other = ['Agile/Scrum', 'Jira', 'Git', 'Technical Documentation', 'Bilingual (English, Mandarin)']
+
   return (
     <div className="space-y-16 py-8 max-w-3xl">
       <AnimatedSection>
@@ -19,19 +24,20 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold">Background</h2>
           <div className="space-y-3 text-white/70">
             <p>
-              I'm a software engineer and final-year student at the University of New South Wales
-              (UNSW), studying Software Engineering with a focus on distributed systems and
-              competitive robotics.
+              I&apos;m a third-year Software Engineering student at the{' '}
+              <span className="text-white/90">University of New South Wales (UNSW)</span>, studying
+              Bachelor of Engineering (Honours). I&apos;m interested in the full stack — from building
+              production APIs and real-time web systems to designing decision-making logic for
+              autonomous robots.
             </p>
             <p>
-              From a young age, I've been fascinated by how things work—whether it's the elegant
-              algorithms that power the internet, the coordinated behaviors of robot teams, or the
-              infrastructure behind applications millions use daily. This curiosity has driven me to
-              deeply understand systems from first principles, rather than just assembling existing pieces.
+              Most of my work lives at the intersection of backend engineering and systems thinking.
+              I care about writing clean, tested, well-documented code that solves real problems — not
+              just code that works in demos.
             </p>
             <p>
-              My engineering journey has been shaped by working on complex problems in robotics,
-              contributing to open source projects, and building tools that solve real problems.
+              Outside of software, I&apos;m President of the UNSW Social Golf Society and a two-time
+              Unigames National gold medallist. I&apos;m also bilingual in English and Mandarin.
             </p>
           </div>
         </section>
@@ -39,143 +45,111 @@ export default function AboutPage() {
 
       {/* Experience */}
       <AnimatedSection delay={0.2}>
-        <section className="space-y-4">
+        <section className="space-y-6">
           <h2 className="text-3xl font-bold">Experience</h2>
-          <div className="space-y-6 text-white/70">
-            <div>
-              <h3 className="font-semibold text-white mb-2">RoboCup SSL Team Strategy Lead</h3>
-              <p>
-                Led the strategy and AI development for our university's RoboCup SSL (Small Size
-                League) team. Designed real-time decision-making systems, coordinated multi-robot
-                behavior, and competed at international competitions. This experience taught me how
-                to ship code under extreme time pressure and debug complex distributed systems.
-              </p>
+          <div className="space-y-8">
+
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 className="font-semibold text-white">Team Lead (Behaviours) — rUNSWift</h3>
+                <span className="text-white/40 text-sm font-mono">2025</span>
+              </div>
+              <p className="text-white/50 text-sm italic">UNSW · RoboCup International Robotics Competition</p>
+              <div className="space-y-1.5 text-white/70 text-sm">
+                <p>Led design and development of the high-level decision-making and tactical behaviour systems for autonomous humanoid robots competing at RoboCup international.</p>
+                <p>Implemented behaviour logic in Python with ROS2, coordinating real-time perception, locomotion, and team strategy across multiple robots.</p>
+                <p className="text-white/50 font-mono text-xs">Part of a team with a 5× World Champion history in autonomous robot soccer.</p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-2">Open Source Contributions</h3>
-              <p>
-                Active contributor to several open source projects focusing on systems programming
-                and developer tooling. I believe in the power of open source to move the industry
-                forward and in building tools that other engineers can learn from and benefit from.
-              </p>
+
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 className="font-semibold text-white">Student Ambassador — UNSW Engineering</h3>
+                <span className="text-white/40 text-sm font-mono">2025 – Present</span>
+              </div>
+              <p className="text-white/70 text-sm">Represent UNSW Engineering at open days, campus tours, and outreach events; engage prospective students on course pathways and university life.</p>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-2">Hackathon Achievements</h3>
-              <p>
-                Multiple hackathon wins and top placements for projects spanning distributed
-                systems, robotics integrations, and full-stack applications. These experiences
-                reinforced my ability to ship quickly and work under pressure.
-              </p>
+
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 className="font-semibold text-white">President — UNSW Social Golf Society</h3>
+                <span className="text-white/40 text-sm font-mono">2025 – Present</span>
+              </div>
+              <p className="text-white/50 text-sm italic">Vice President (External), 2024–2025</p>
+              <div className="space-y-1.5 text-white/70 text-sm">
+                <p>Oversee operations, sponsorship negotiations, and event planning for one of UNSW&apos;s largest sports societies; manage a committee of 10+ and a Discord community.</p>
+                <p>Secured external sponsorships and partnerships with local golf venues and equipment suppliers.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </AnimatedSection>
+
+      {/* Education */}
+      <AnimatedSection delay={0.3}>
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold">Education</h2>
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+              <div>
+                <h3 className="font-semibold text-white">University of New South Wales</h3>
+                <p className="text-white/50 text-sm">Bachelor of Engineering (Honours) — Software Engineering</p>
+              </div>
+              <span className="text-white/40 text-sm font-mono">2023 – Present</span>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+              <h3 className="font-semibold text-white">Knox Grammar School</h3>
+              <span className="text-white/40 text-sm font-mono">2021 – 2022</span>
             </div>
           </div>
         </section>
       </AnimatedSection>
 
       {/* Skills */}
-      <AnimatedSection delay={0.3}>
+      <AnimatedSection delay={0.35}>
         <section className="space-y-6">
           <h2 className="text-3xl font-bold">Skills</h2>
-
           <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold text-white mb-2">Languages</h3>
-              <div className="flex flex-wrap gap-2">
-                {['Python', 'TypeScript', 'Rust', 'C++', 'Go', 'JavaScript'].map((lang) => (
-                  <span
-                    key={lang}
-                    className="text-sm bg-white/5 border border-white/10 rounded px-3 py-1 text-white/70"
-                  >
-                    {lang}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-white mb-2">Tools & Frameworks</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  'Next.js',
-                  'React',
-                  'Node.js',
-                  'PostgreSQL',
-                  'Docker',
-                  'Kubernetes',
-                  'ROS2',
-                  'Git',
-                ].map((tool) => (
-                  <span
-                    key={tool}
-                    className="text-sm bg-white/5 border border-white/10 rounded px-3 py-1 text-white/70"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-white mb-2">Areas of Focus</h3>
-              <div className="space-y-2 text-white/70">
-                <div className="flex gap-3">
-                  <span className="text-white/40">•</span>
-                  <span>
-                    <strong>Systems Programming:</strong> Building robust, efficient systems that
-                    handle real-world constraints and high-load scenarios
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-white/40">•</span>
-                  <span>
-                    <strong>Distributed Systems:</strong> Consensus algorithms, state replication,
-                    fault tolerance, and scalability
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-white/40">•</span>
-                  <span>
-                    <strong>Robotics:</strong> Multi-agent coordination, vision systems, real-time
-                    control, and competition engineering
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-white/40">•</span>
-                  <span>
-                    <strong>Infrastructure:</strong> Deploying, monitoring, and scaling applications
-                    in production
-                  </span>
+            {[
+              { label: 'Languages', items: languages },
+              { label: 'Frameworks & Tools', items: frameworks },
+              { label: 'Databases', items: databases },
+              { label: 'Other', items: other },
+            ].map(({ label, items }) => (
+              <div key={label}>
+                <h3 className="font-semibold text-white/80 text-sm mb-2">{label}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <span
+                      key={item}
+                      className="text-sm bg-white/5 border border-white/10 rounded px-3 py-1 text-white/70"
+                    >
+                      {item}
+                    </span>
+                  ))}
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
       </AnimatedSection>
 
-      {/* Interests */}
+      {/* Awards */}
       <AnimatedSection delay={0.4}>
         <section className="space-y-4">
-          <h2 className="text-3xl font-bold">Interests</h2>
+          <h2 className="text-3xl font-bold">Awards</h2>
           <div className="space-y-2 text-white/70">
-            <div className="flex gap-3">
-              <span className="text-white/40">•</span>
-              <span>Competitive robotics and multi-agent systems</span>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-white/40">•</span>
-              <span>Building and open sourcing developer tools</span>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-white/40">•</span>
-              <span>Learning about emerging technologies and paradigms</span>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-white/40">•</span>
-              <span>Coffee (probably drinking it while coding)</span>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-white/40">•</span>
-              <span>Bouldering and exploring new climbing gyms</span>
-            </div>
+            {[
+              { year: '2024', title: 'Gold Medal (Individual) — Unigames Nationals Golf' },
+              { year: '2023', title: 'Gold Medal (Team) — Unigames Nationals Golf' },
+              { year: '2019', title: 'Chinese Language Prize — Sydney Grammar School' },
+            ].map(({ year, title }) => (
+              <div key={year + title} className="flex gap-4">
+                <span className="text-white/30 font-mono text-sm w-10 shrink-0">{year}</span>
+                <span className="text-sm">{title}</span>
+              </div>
+            ))}
           </div>
         </section>
       </AnimatedSection>
@@ -184,12 +158,30 @@ export default function AboutPage() {
       <AnimatedSection delay={0.5}>
         <div className="border-t border-white/10 pt-8">
           <p className="text-white/60 mb-4">Want to work together or chat about ideas?</p>
-          <a
-            href="mailto:ezhou187@gmail.com"
-            className="inline-block px-6 py-3 border border-white hover:bg-white hover:text-[#0a0a0a] transition-all duration-200 rounded font-medium"
-          >
-            Get in Touch
-          </a>
+          <div className="flex flex-wrap gap-4">
+            <a
+              href="mailto:ezhou187@gmail.com"
+              className="inline-block px-6 py-3 border border-white hover:bg-white hover:text-[#0a0a0a] transition-all duration-200 rounded font-medium"
+            >
+              Get in Touch
+            </a>
+            <a
+              href="/eric-zhou-resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
+            >
+              Download Resume ↓
+            </a>
+            <a
+              href="https://linkedin.com/in/eric-zhou-a09898337"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-3 border border-white/30 hover:border-white/60 text-white/80 hover:text-white transition-all duration-200 rounded font-medium"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </AnimatedSection>
     </div>

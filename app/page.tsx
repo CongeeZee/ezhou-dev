@@ -152,7 +152,7 @@ export default function Home() {
 
       {/* Navigation Links */}
       <AnimatedSection delay={0.4}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link
             href="/projects"
             className="border border-white/10 rounded-lg p-8 hover:border-white/40 hover:bg-white/2 transition-all group text-center sm:text-left"
@@ -164,23 +164,13 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/lab"
+            href="/about"
             className="border border-white/10 rounded-lg p-8 hover:border-white/40 hover:bg-white/2 transition-all group text-center sm:text-left"
           >
             <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
-              Lab →
+              About →
             </h3>
-            <p className="text-white/60 text-sm mt-2">Experiments and small projects</p>
-          </Link>
-
-          <Link
-            href="/blog"
-            className="border border-white/10 rounded-lg p-8 hover:border-white/40 hover:bg-white/2 transition-all group text-center sm:text-left"
-          >
-            <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
-              Blog →
-            </h3>
-            <p className="text-white/60 text-sm mt-2">Technical writing and insights</p>
+            <p className="text-white/60 text-sm mt-2">Background, experience, and skills</p>
           </Link>
         </div>
       </AnimatedSection>

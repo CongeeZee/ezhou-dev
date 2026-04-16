@@ -20,9 +20,9 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: 'northbound',
-    title: 'Northbound',
-    tagline: 'UBL 2.1 Order Management SaaS API for B2B procurement',
+    slug: 'b2b-order-api',
+    title: 'B2B Order Management API',
+    tagline: 'Production REST API for UBL 2.1 e-procurement document generation',
     description:
       'Scrum Master and engineer on a 5-person team building a production REST API for generating and managing UBL 2.1 standardised order documents used in B2B e-invoicing and procurement workflows.',
     tech: ['TypeScript', 'Node.js', 'Express', 'Supabase', 'Jest', 'OpenAPI 3.0'],
@@ -30,7 +30,7 @@ export const projects: Project[] = [
     metric: '5-person team · full test coverage · OpenAPI 3.0 docs',
     year: '2024',
     overview:
-      'Northbound is a production-grade REST API for generating and managing UBL 2.1 standardised order documents — the XML format used in B2B procurement and e-invoicing across government and enterprise. As Scrum Master, I drove sprint planning, backlog refinement, and Jira issue tracking across the full project lifecycle while also contributing directly to the codebase.',
+      'A production-grade REST API (codename Northbound) for generating and managing UBL 2.1 standardised order documents — the XML format used in B2B procurement and e-invoicing across government and enterprise. As Scrum Master, I drove sprint planning, backlog refinement, and Jira issue tracking across the full project lifecycle while also contributing directly to the codebase.',
     architecture:
       'The API is built on Express with TypeScript, using Supabase (PostgreSQL) for data persistence. All endpoints follow RESTful conventions and are documented with OpenAPI 3.0 / Swagger. Recurring order management supports full CRUD operations with schema validation at every layer. The test suite uses Jest with isolated unit and integration tests to ensure correctness of UBL document generation logic.',
     challenges: [
@@ -187,6 +187,40 @@ export const projects: Project[] = [
       'Implement RSS feed for blog posts',
       'Add interactive project visualisations',
       'Create a /uses page for tools and setup',
+    ],
+    featured: false,
+  },
+  {
+    slug: 'fairway',
+    title: 'Fairway — Golf Score Tracker',
+    tagline: 'Full-stack golf scoring app with WHS handicap calculation',
+    description:
+      'A full-stack golf scoring and handicap tracking web application with hole-by-hole scoring, round history, stats dashboards, and World Handicap System compliant handicap index calculation.',
+    tech: ['React', 'TypeScript', 'Express', 'Prisma', 'PostgreSQL', 'Material UI'],
+    github: 'https://github.com/CongeeZee/golf-app',
+    metric: 'WHS handicap calc · hole-by-hole scoring · stats dashboard',
+    year: '2025',
+    overview:
+      'Fairway is a full-stack golf score tracker built to solve a personal need — tracking rounds, analysing performance, and calculating an accurate handicap index. It supports hole-by-hole scorecard entry with live score-to-par feedback, a full round history, and an aggregate stats dashboard showing averages, best/worst rounds, and hole-type breakdowns (eagles, birdies, pars, bogeys).',
+    architecture:
+      'The backend is an Express 5 API with Prisma ORM on Supabase PostgreSQL. Authentication uses JWT with bcrypt password hashing and Zod request validation. The frontend is React 18 with Vite, Material UI, React Router v6, and React Query for server state. The database uses a join model (RoundHole) to avoid duplicating par data — par is always sourced from the Hole record.',
+    challenges: [
+      'Implementing the World Handicap System formula correctly (score differentials, best-8-of-20 averaging, 0.96 adjustment)',
+      'Designing the RoundHole join model to avoid par data duplication across historical rounds',
+      'Handling Supabase connection pooling constraints (port 6543 transaction pooler vs direct port 5432)',
+      'Express route ordering to prevent /rounds/stats being parsed as a round ID parameter',
+    ],
+    learned: [
+      'Prisma ORM with PostgreSQL — schema design, migrations, and query optimisation',
+      'React Query for server state management and cache invalidation',
+      'Full-stack TypeScript with shared type patterns between frontend and backend',
+      'World Handicap System specification and sports scoring domain modelling',
+    ],
+    future: [
+      'Add course rating and slope rating data for more accurate handicap calculations',
+      'Implement social features — compare stats with friends',
+      'Add GPS-based course detection and shot tracking',
+      'Deploy with CI/CD pipeline',
     ],
     featured: false,
   },
